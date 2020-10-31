@@ -1,0 +1,54 @@
+<html>
+	<head>
+	<title>QuestionTwo</title>
+		<style>
+	
+		div
+		{
+		margin:5px;
+		height:50px;
+		width:50px;
+		float: left;
+		} 
+	  
+		</style> 
+     
+    <script>
+     function square()
+	 
+	 {
+	  var size = 0;
+	  while (document.getElementById("square" + ++size) !== null)
+          
+	  {
+	  document.body.removeChild(document.getElementById("square" + size));
+	  }
+	  
+	  var amount = document.getElementById("Number").value;
+      for(var i = 1; i < parseInt(amount) + 1; i++)
+          
+	  {
+	  var square = document.createElement("div");
+      square.style.backgroundColor = "rgb(" + Math.floor(Math.random() * 256) + "," + Math.floor(Math.random() * 256) + "," + Math.floor(Math.random() * 256) + ")";
+	  square.style.marginLeft = "" + 5*(Math.pow(2,i)) + "px"
+	  square.id = "square" + i; 
+	  document.body.appendChild(square);
+	  }
+         
+	  }
+      
+    
+      
+    </script>
+ </head>
+    
+ <body onload="square()">
+ 
+	
+	    <span>Please enter the number of squares: </span> 
+		
+		<input id="Number" value="4" type="text" oninput="square()"> 
+		<br>
+		<div id = "square1"></div>
+ </body>
+</html>

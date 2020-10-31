@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html> 
+	<head>
+	<title> 
+	Question3
+	</title>
+	
+	<h1><span class = "Nought">Noughts</span> And 
+	<span class = "Cross">Crosses</span></h1>
+	
+	
+		<style>
+		span.Cross
+		{
+		color: red;
+		text-align: center;
+		}
+		
+		span.Nought
+		{
+		color: green;
+		text-align: center;
+		}
+		
+		.gameBoard div
+		{
+		height: 100px;
+		width: 100px;
+		passing: 10px;
+		border: solid 2px;
+		float: left;
+		margin: 10px;
+		}
+		
+		.gameBoard
+		{
+		clear: both;
+		}
+		
+		.gameBoard, td
+		{
+		font-size: 100px;
+		text-align: center;
+		}
+		
+		.color 
+		{
+		background-color: yellow;
+		}
+				
+		
+		</style>
+	</head>
+	
+	<body>
+	Select a box to begin the game:
+	<br>
+	</br>
+	<div>
+		<div class="gameBoard" id = "gameBoard">
+		<span id = "player"></span>
+            <div id="1_1" onclick="place(this)"></div>
+            <div id="2_1" onclick="place(this)"></div>
+            <div id="3_1" onclick="place(this)"></div>
+        </div>
+        <div class="gameBoard">
+            <div id="1_2" onclick="place(this)"></div>
+            <div id="2_2" onclick="place(this)"></div>
+            <div id="3_2"onclick="place(this)"></div>
+        </div>
+        <div class="gameBoard">
+            <div id="1_3" onclick="place(this)"></div>
+            <div id="2_3" onclick="place(this)"></div>
+            <div id="3_3" onclick="place(this)"></div>
+        </div>
+    </div>
+    <script>
+		
+		var player = "O"; 
+		
+        var won = false;
+        function place(box) 
+		{
+            if(box.innerText != "" || won) return;
+            box.innerText = player;
+            player == "O" ? player = "X" : player = "O";
+            checkGameBoard();       
+
+			
+			
+        }
+		
+        function checkGameBoard() 
+		{
+            for(var i = 1; i <= 3; i++) 
+			{
+                checkWinner(document.getElementById(i + "_1") ,
+                    document.getElementById(i + "_2") ,
+                    document.getElementById(i + "_3") );
+                checkWinner(document.getElementById("1_" + i) ,
+                    document.getElementById("2_" + i) ,
+                    document.getElementById("3_" + i) );
+            }
+            checkWinner(document.getElementById("1_1") ,
+                document.getElementById("2_2") ,
+                document.getElementById("3_3") );
+            checkWinner(document.getElementById("1_3") ,
+                document.getElementById("2_2") ,
+                document.getElementById("3_1") );
+        }
+		
+        function checkWinner(first, second, third) 
+		{
+            var won = false;
+			if(first.innerHTML != "" && first.innerHTML == second.innerHTML && first.innerHTML == third.innerHTML) 
+			{
+				window.alert("You are the winner");
+				won = true;
+				}
+				
+			if (won)
+			{
+			first.setAttribute("class","color");
+			second.setAttribute("class","color");
+			third.setAttribute("class","color");
+			
+			}
+			
+        }
+		
+	</script>
+	</body>
+	</html>
+	
+	
+	
+	
+	

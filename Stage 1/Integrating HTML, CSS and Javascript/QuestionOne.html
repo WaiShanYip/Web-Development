@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<style type="text/css">
+td, th
+{
+border: solid 1px; 
+font-family: sans-serif;
+}
+
+tr
+{
+border: solid 1px; 
+font-family: sans-serif;
+background-color: #41d0f4;
+}
+tr:nth-child(even) {background-color:lightgray}
+
+</style>
+
+  <title>QuestionOne</title>
+
+  <script type="text/javascript">
+
+  function myFunction(func) 
+   {
+   func.parentNode.parentNode.parentNode.parentNode.removeChild(func.parentNode.parentNode.parentNode);
+   rowCounter();
+   }
+   
+   
+   function Display()
+   {
+   var name = document.getElementById('name').value,
+   dob = document.getElementById('dob').value,
+   colour = document.getElementById('colour').value,
+   table = document.getElementById('table'),
+   row = table.insertRow(1),
+   cell1 = row.insertCell(0),
+   cell2 = row.insertCell(1),
+   cell3 = row.insertCell(2),
+   cell4 = row.insertCell(3),
+   Button = document.createElement("button");
+   
+   Button.innerHTML = "<input type= 'button' value = 'Delete' id= 'button' onClick='myFunction(this)'>"
+   Button.setAttribute('onclick', 'deleteRow(this);');
+   
+   cell1.innerHTML = name;
+   cell2.innerHTML = dob;
+   cell3.innerHTML = colour;
+   cell4.append(Button);
+   document.getElementById("form").reset();
+   rowCounter();
+ }
+
+	function rowCounter()
+	{
+	var counter = document.getElementById('table').rows.length;
+	document.getElementById('Counter').innerHTML = counter;
+	}
+	
+	function deleteRow()
+	{
+	var valueOfRow = input.parentNode.parentNode.rowIndex;
+	document.getElementById('table').deleteRow(valueOfRow);
+	rowCounter()
+}
+
+  </script>
+</head>
+<body>
+
+
+
+<form name="form" id="form" >
+	Name: <input type = "text" name = "name" id="name"/><br />
+	Date of Birth: <input type = "date" name = "dob" id="dob"  /><br />
+	Eye Colour: <select id="colour" name="Eye Colour">
+		<option disabled selected value> -- Select an option -- </option>
+		<option value="Blue">Blue</option>
+		<option value="Brown">Brown</option>
+		<option value="Green">Green</option>
+		<option value="Grey">Grey</option>
+		<option value="Other">Other</option>
+		</select>
+	<br><br>
+	<button type="reset" value="Reset">Reset</button>
+	<input type = "button" onClick="Display();" value = "Display"/> </br>
+	
+	
+	
+</form>
+	<br><br>
+
+
+
+<table border = "2" id= "table">
+Row Counter: <span id = "Counter"></span>
+<tr>
+<th> Name </th>
+<th>Date of birth</th>
+<th> Eye Colour </th>
+<th> Delete </th>
+</tr>
+
+</table>
+
+</body>
+</html>

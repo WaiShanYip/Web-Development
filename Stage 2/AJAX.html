@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <style>
+        h1, h3
+        {
+            text-align: center;
+            font-family: arial, sans-serif;
+            font-weight: bold;
+            color: 
+        }
+        
+        body
+        {
+            background-color: #60D7B1;
+            color: white;
+        }
+        
+        p
+        {
+        font-weight: bold;    
+        font-family: arial, sans-serif;
+        }
+        
+        #table
+        {
+            width: 70%;
+            margin-left: 15%;
+            margin-right: 15%;
+            text-align: center;
+            font-family: arial, sans-serif;
+        }
+        
+        th
+        {
+            background-color: #357360 ;
+            color: white;
+        }
+        
+        td 
+        {
+            background-color: #DFFBF2;
+            color: black;
+        }
+        
+        #buttons
+        {
+            width: 100%;
+            margin-left: 11%;
+            font-weight: bold;
+            font-family: arial;
+            
+        }
+        
+        #BusinessSearch
+        {
+            text-align: center;
+        }
+       
+        
+    </style>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <link type="text/css" rel="stylesheet" href ="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+    <script type= text/javascript>
+
+
+    
+            function getRestaurantResults(page) //A function to return all of the results of the restaurants.
+            {
+                $.get("https://www.cs.kent.ac.uk/people/staff/yh/co539_a2_data/hygiene.php?op=get&page=" + page, //Returns the page of results based on the page number typed in using an AJAX request $.get.
+                    function(results) 
+                      {
+                        var restaurantResults = []; //An array to store the restaurant data
+                        restaurantResults +='<tr> <th>Business name</th><th>Address</th><th>Type</th><th>Hygiene rating</th><th>Get rating</th><th>Date of inspection</th> </tr>'; //Table headings.
+                        console.log(results); //Logs the table results. 
+                     results=JSON.parse(results); //Parses a JSON string constructing the results.
+                        $.each(results, function(key, object) //Iterates through the ForEach loop returning results for each cell of table.
+                               { 
+                                restaurantResults +='<tr>';
+                                restaurantResults += '<td>' + object.business + '</td>'; 
+                                restaurantResults += '<td>' + object.address + '</td>';
+                                restaurantResults += '<td>' + object.type + '</td>';
+                                restaurantResults += '<td>' + object.rating + '</td>';
+                                restaurantResults += '<td>' +'<button id= "rating" type= "button" value='+object.business +'">Get Rating</button>' +'</td>'; //Creates the Get Rating buttons.
+                                restaurantResults += '<td>' + object.date + '</td>';
+                                restaurantResults += '</tr>';
+                                });
+                
+                    $('table tbody').append(restaurantResults); //Appends the data into the table.
+                    });
+            }
+
+            $(document).ready(function() //Runs the function when the document loads.
+            {
+                getRestaurantResults(1);//Loads the first page of results
+                
+                $(document).on("click", "button#buttonRow", function() 
+                {
+                    $("#table tbody").empty(); //Empties the table.
+                    getRestaurantResults($(this).val());
+                    
+                });
+            
+        
+                $.get("https://www.cs.kent.ac.uk/people/staff/yh/co539_a2_data/hygiene.php?op=pages", //Returns the number of pages using a GET.
+                (function(results)
+                {
+                    var pageNumber=JSON.parse(results); //Parses a JSON string constructing the results.
+                    var i; 
+                    for(i=1; i<=pageNumber.pages; i++) //For loop for the page buttons.
+                        {
+                            var x = "<button id='buttonRow' type='button' value='" + i +"'>" + i + "</button>"; // Creates buttons.
+                            $("#buttons").append(x);
+                        }
+                            console.log(results); //Logs the table results.
+                }));
+                    //An array for autosearch.
+                    var myBusinessChoices =
+                    [
+                        "Wagamama",
+                        "Burger King",
+                        "Greggs",
+                        "KFC",
+                    ];      
+                
+                $(document).on("click", "button#rating", function() //Creates the rating buttons.
+                {
+                    var restaurants = this.parentNode.parentNode.childNodes[0].innerHTML;
+                    console.log(restaurants); //Logs the table results.
+                    $.get("https://www.cs.kent.ac.uk/people/staff/yh/co539_a2_data/rating.php?businessName=" + restaurants, //Returns the ratings for the restaurant searched for using a GET.
+                          function(results)
+                          {
+                            var data = "";
+                       
+                            if(results.length==0) //If there are no available ratings, an alert is triggered.
+                                {
+                                    alert("There is no rating information for this restaurant.");  
+                                };
+                            $.each(results, function(key, object) //If there are available ratings, an average rating and total ratings are displayed.
+                               {
+                                    data += "Average Rating is: " + object.avgRating + ' and Total Rating is: ' + object.totalRatings;
+                                    alert(data);
+                                });
+                        }); 
+                });
+                
+                $("#BusinessSearch").submit(function(action) //Function to create a search.
+                {
+                    action.preventDefault(); //Cancels the action if it is cancelable 
+                    $("#table tbody tr").empty(); //Empties the table.
+                    
+                   var name= document.getElementById('search').value; 
+                    $.get("https://www.cs.kent.ac.uk/people/staff/yh/co539_a2_data/hygiene.php?op=search&business=" + name, //Returns the page of results based on the business name typed in using an AJAX request $.get.
+                          function(results)
+                          {
+                            console.log(results); //Logs the table results.
+                        
+                        var restaurantResults =[]; //An array to store the restaurant data.
+                        restaurantResults +='<tr> <th>Business name</th><th>Address</th><th>Type</th><th>Hygiene rating</th><th>Get rating</th><th>Date of inspection</th></tr>'; //Table headings.
+                        results=JSON.parse(results); //Parses a JSON string constructing the results.
+                        $.each(results, function(key, object) //Iterates through the ForEach loop returning results for each cell of table.
+                               {
+                                    restaurantResults +='<tr>';
+                                    restaurantResults += '<td>' + object.business + '</td>'; 
+                                    restaurantResults += '<td>' + object.address + '</td>';
+                                    restaurantResults += '<td>' + object.type + '</td>';
+                                    restaurantResults += '<td>' + object.rating + '</td>';
+                                    restaurantResults += '<td>' +'<button id= "rating" type= "button" value='+object.business +'">Get Rating</button>' +'</td>'; //Creates the Get Rating buttons.
+                                    restaurantResults += '<td>' + object.date + '</td>';
+                                    restaurantResults += '</tr>';
+
+                                    myBusinessChoices.push(object.business); //Using the array for the autocomplete.
+                                });
+                            $('table tbody').append(restaurantResults); //Appends the data into the table.
+                        });
+                    $("#search").autocomplete(
+                        {
+                            source: myBusinessChoices //Uses the array for the autocomplete.
+                        });
+                    });
+            });
+        
+        
+                
+    </script>
+
+
+    <title>
+        wsy3-CO539 Assessment 2
+    </title>
+</head>
+
+<body>
+    <h1> Food Standards Agency</h1>
+    <h3>
+        This page uses data from The Food Standards Agency and makes a list of results of Maidstone restaurants' hygiene inspections publicly available.
+    </h3>
+    <table id="table" border="2">
+        <thead>
+            
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <br>
+    <br>
+    <div class= b id="buttons">Page: </div>
+    <br>
+    <br>
+    <form id="BusinessSearch" align="center">
+    <p>Business name: </p>
+    <input id="search" type="text">
+    <input type="submit" value="Search" font-weight=bold;>
+    </form>
+
+</body>
+
+</html>
