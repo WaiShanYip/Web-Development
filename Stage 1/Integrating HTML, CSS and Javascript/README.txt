@@ -20,3 +20,13 @@ This is a webpage which generates a series of small boxes with the amount determ
 Each box has a randomly generated colour.
 The margin-left of each box doubles with every new box.
 
+
+PROJECT TITLE: QuestionThree.html
+PURPOSE OF PROJECT: Stage 1 of University, Databases and the Web ~ Assignment 1
+VERSION or DATE: 11/02/2019
+AUTHORS: Wai Shan (Karen) Yip
+EXPLANATION: 
+This is a webpage that contains the game Noughts and Crosses.
+When a box is clicked on, it is either filled with an X or an O based on the player who clicked.
+Once a box has been clicked on and filled with either X or O, it cannot be clicked on again to change the value.
+Winning combinations light up, indicating the winner.
